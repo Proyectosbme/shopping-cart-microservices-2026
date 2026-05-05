@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.shoppingcart.payment.domain.exceptions.InvalidPaymentAmountException;
 import com.shoppingcart.payment.domain.exceptions.OrderAlreadyPaidException;
+import com.shoppingcart.payment.domain.exceptions.OrderNotFoundException;
+import com.shoppingcart.payment.domain.exceptions.OrderNotValidForPaymentException;
 import com.shoppingcart.payment.domain.exceptions.PaymentAlreadyProcessedException;
 import com.shoppingcart.payment.domain.exceptions.PaymentNotFoundException;
 
@@ -27,6 +29,22 @@ public class GlobalExceptionHandler {
             HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDTO(
                 404, "Not Found", "PAYMENT_NOT_FOUND",
+                ex.getMessage(), request.getRequestURI()));
+    }
+
+    @ExceptionHandler(OrderNotFoundException.class)
+    public ResponseEntity<ErrorResponseDTO> handleOrderNotFound(OrderNotFoundException ex,
+            HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDTO(
+                404, "Not Found", "ORDER_NOT_FOUND",
+                ex.getMessage(), request.getRequestURI()));
+    }
+
+    @ExceptionHandler(OrderNotValidForPaymentException.class)
+    public ResponseEntity<ErrorResponseDTO> handleOrderNotValid(OrderNotValidForPaymentException ex,
+            HttpServletRequest request) {
+        return ResponseEntity.status(422).body(new ErrorResponseDTO(
+                422, "Unprocessable Entity", "ORDER_NOT_VALID_FOR_PAYMENT",
                 ex.getMessage(), request.getRequestURI()));
     }
 

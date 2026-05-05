@@ -8,16 +8,16 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 public record ProcessPaymentRequest(
-    @NotNull(message = "El id de la orden es obligatorio")
+    @NotNull(message = "Order id is required")
     Long orderId,
 
-    @NotNull(message = "El id del cliente es obligatorio")
+    @NotNull(message = "Customer id is required")
     Long customerId,
 
-    @NotNull(message = "El monto es obligatorio")
-    @Positive(message = "El monto debe ser mayor a cero")
+    @NotNull(message = "Amount is required")
+    @Positive(message = "Amount must be greater than zero")
     BigDecimal amount,
 
-    @NotNull(message = "El método de pago es obligatorio")
+    @NotNull(message = "Payment method is required")
     PaymentMethod paymentMethod
-){}
+) {}

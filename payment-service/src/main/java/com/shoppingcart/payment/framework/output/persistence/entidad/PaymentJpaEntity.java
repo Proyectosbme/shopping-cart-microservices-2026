@@ -41,7 +41,4 @@ public class PaymentJpaEntity {
     private PaymentStatus status;
     @Column(nullable = false)
     private LocalDateTime createdAt;
-
-
-    // getters y setters
 }
