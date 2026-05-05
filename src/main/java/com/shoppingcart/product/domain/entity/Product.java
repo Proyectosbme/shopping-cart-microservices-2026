@@ -25,7 +25,7 @@ public class Product {
         this.image = image;
     }
 
-    public static Product reconstituir(Long id, String title, double price,
+    public static Product reconstitute(Long id, String title, double price,
             String description, String category, String imageUrl) {
         return new Product(
                 new ProductId(id),
