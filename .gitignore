@@ -36,9 +36,3 @@ build/
 .claude/
 CLAUDE.md
 
-### Clases pendientes de subir ###
-src/main/java/com/shoppingcart/product/domain/entity/Product.java
-src/main/java/com/shoppingcart/product/domain/vo/Category.java
-src/main/java/com/shoppingcart/product/domain/vo/Money.java
-src/main/java/com/shoppingcart/product/domain/vo/ProductId.java
-src/main/java/com/shoppingcart/product/domain/vo/ProductImage.java
