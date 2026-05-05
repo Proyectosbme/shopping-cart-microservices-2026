@@ -1,7 +1,6 @@
 package com.shoppingcart.order.aplicacion.command.usecase;
 
 import java.math.BigDecimal;
-
 import java.util.List;
 
 import com.shoppingcart.order.aplicacion.command.dto.CreateOrderCommand;
