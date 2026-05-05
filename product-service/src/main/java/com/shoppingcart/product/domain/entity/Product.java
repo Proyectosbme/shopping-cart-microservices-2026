@@ -1,6 +1,5 @@
 package com.shoppingcart.product.domain.entity;
 
-
 import com.shoppingcart.product.domain.vo.Category;
 import com.shoppingcart.product.domain.vo.Money;
 import com.shoppingcart.product.domain.vo.ProductId;
@@ -36,28 +35,10 @@ public class Product {
                 new ProductImage(imageUrl));
     }
 
-    // Getters
-    public ProductId getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public Money getPrice() {
-        return price;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public ProductImage getImage() {
-        return image;
-    }
+    public ProductId getId() { return id; }
+    public String getTitle() { return title; }
+    public Money getPrice() { return price; }
+    public String getDescription() { return description; }
+    public Category getCategory() { return category; }
+    public ProductImage getImage() { return image; }
 }

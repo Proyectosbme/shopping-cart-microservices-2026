@@ -6,6 +6,6 @@ public record ProductId(Long value) {
 
     public ProductId {
         if (value == null || value <= 0)
-            throw new ProductValidationException("id", "debe ser un número positivo");
+            throw new ProductValidationException("id", "must be a positive number");
     }
 }

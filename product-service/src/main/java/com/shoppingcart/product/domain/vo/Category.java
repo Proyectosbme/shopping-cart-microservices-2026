@@ -6,7 +6,7 @@ public record Category(String name) {
 
     public Category {
         if (name == null || name.isBlank())
-            throw new ProductValidationException("category", "no puede estar vacía");
+            throw new ProductValidationException("category", "cannot be blank");
         name = name.trim().toLowerCase();
     }
 }

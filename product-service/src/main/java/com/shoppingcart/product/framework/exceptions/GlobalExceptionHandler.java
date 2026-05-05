@@ -17,11 +17,13 @@ import jakarta.servlet.http.HttpServletRequest;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    private static final String BAD_REQUEST = "Bad Request";
+
     @ExceptionHandler(ProductValidationException.class)
     public ResponseEntity<ErrorResponseDTO> handleValidation(ProductValidationException ex,
             HttpServletRequest request) {
         return ResponseEntity.badRequest().body(new ErrorResponseDTO(
-                400, "Datos Inválidos", "DATOS_INVALIDOS",
+                400, BAD_REQUEST, "INVALID_DATA",
                 ex.getMessage(), request.getRequestURI()));
     }
 
@@ -29,11 +31,10 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponseDTO> handleNotFound(ProductNotFoundException ex,
             HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDTO(
-                404, "Recurso No Encontrado", "RECURSO_NO_ENCONTRADO",
+                404, "Not Found", "PRODUCT_NOT_FOUND",
                 ex.getMessage(), request.getRequestURI()));
     }
 
-    // Errores de validación en @RequestBody con anotaciones @NotBlank, @Min, etc.
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponseDTO> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
             HttpServletRequest request) {
@@ -41,18 +42,17 @@ public class GlobalExceptionHandler {
                 .map(e -> e.getField() + ": " + e.getDefaultMessage())
                 .toList();
         return ResponseEntity.badRequest().body(new ErrorResponseDTO(
-                400, "Datos Inválidos", "DATOS_INVALIDOS",
-                "Los campos enviados no cumplen con las validaciones requeridas.",
+                400, BAD_REQUEST, "VALIDATION_ERROR",
+                "Request fields failed validation.",
                 request.getRequestURI(), details));
     }
 
-    // JSON malformado o tipo de dato incorrecto
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorResponseDTO> handleNotReadable(HttpMessageNotReadableException ex,
             HttpServletRequest request) {
         return ResponseEntity.badRequest().body(new ErrorResponseDTO(
-                400, "Error de Formato JSON", "ERROR_FORMATO_DATOS",
-                "El JSON enviado tiene un formato incorrecto o un tipo de dato inválido.",
+                400, BAD_REQUEST, "INVALID_JSON_FORMAT",
+                "The request body has an invalid format or an unsupported value.",
                 request.getRequestURI()));
     }
 
@@ -60,8 +60,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponseDTO> handleGeneric(Exception ex, HttpServletRequest request) {
         ex.printStackTrace();
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorResponseDTO(
-                500, "Error Interno", "ERROR_INTERNO",
-                "Ocurrió un error inesperado en el servidor.",
+                500, "Internal Server Error", "INTERNAL_ERROR",
+                "An unexpected error occurred.",
                 request.getRequestURI()));
     }
 }

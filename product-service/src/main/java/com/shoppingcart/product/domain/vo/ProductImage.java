@@ -6,8 +6,8 @@ public record ProductImage(String url) {
 
     public ProductImage {
         if (url == null || url.isBlank())
-            throw new ProductValidationException("image", "la URL no puede estar vacía");
+            throw new ProductValidationException("image", "URL cannot be blank");
         if (!url.startsWith("http://") && !url.startsWith("https://"))
-            throw new ProductValidationException("image", "la URL debe comenzar con http:// o https://");
+            throw new ProductValidationException("image", "URL must start with http:// or https://");
     }
 }
