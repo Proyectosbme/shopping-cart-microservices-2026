@@ -9,8 +9,10 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.shoppingcart.order.domain.exceptions.InvalidProductException;
 import com.shoppingcart.order.domain.exceptions.OrderAlreadyCancelledException;
 import com.shoppingcart.order.domain.exceptions.OrderNotFoundException;
+import com.shoppingcart.order.domain.exceptions.PriceMismatchException;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -30,6 +32,22 @@ public class GlobalExceptionHandler {
             HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponseDTO(
                 409, "Conflicto", "ORDEN_YA_CANCELADA",
+                ex.getMessage(), request.getRequestURI()));
+    }
+
+    @ExceptionHandler(InvalidProductException.class)
+    public ResponseEntity<ErrorResponseDTO> handleInvalidProduct(InvalidProductException ex,
+            HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDTO(
+                400, "Producto Inválido", "PRODUCTO_INVALIDO",
+                ex.getMessage(), request.getRequestURI()));
+    }
+
+    @ExceptionHandler(PriceMismatchException.class)
+    public ResponseEntity<ErrorResponseDTO> handlePriceMismatch(PriceMismatchException ex,
+            HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponseDTO(
+                409, "Precio No Coincide", "PRECIO_NO_COINCIDE",
                 ex.getMessage(), request.getRequestURI()));
     }
 
