@@ -1,4 +1,4 @@
-package com.shoppingcart.order.domain.entity;
+package com.shoppingcart.order.domain.vo;
 
 public record OrderId(Long value) {
     public OrderId {
