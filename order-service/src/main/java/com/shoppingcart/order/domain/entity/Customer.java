@@ -8,28 +8,19 @@ public class Customer {
 
     private Customer(Long id, String name, String email) {
         if (name == null || name.isBlank())
-            throw new IllegalArgumentException("El nombre del cliente no puede estar vacío");
+            throw new IllegalArgumentException("Customer name cannot be blank");
         if (email == null || email.isBlank())
-            throw new IllegalArgumentException("El email del cliente no puede estar vacío");
+            throw new IllegalArgumentException("Customer email cannot be blank");
         this.id = id;
         this.name = name;
         this.email = email;
     }
 
-    // Factory method — reconstruir desde persistencia
     public static Customer reconstitute(Long id, String name, String email) {
         return new Customer(id, name, email);
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
+    public Long getId() { return id; }
+    public String getName() { return name; }
+    public String getEmail() { return email; }
 }

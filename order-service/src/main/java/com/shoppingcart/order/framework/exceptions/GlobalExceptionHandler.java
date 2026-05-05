@@ -19,11 +19,13 @@ import jakarta.servlet.http.HttpServletRequest;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    private static final String BAD_REQUEST = "Bad Request";
+
     @ExceptionHandler(OrderNotFoundException.class)
     public ResponseEntity<ErrorResponseDTO> handleNotFound(OrderNotFoundException ex,
             HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDTO(
-                404, "Recurso No Encontrado", "RECURSO_NO_ENCONTRADO",
+                404, "Not Found", "ORDER_NOT_FOUND",
                 ex.getMessage(), request.getRequestURI()));
     }
 
@@ -31,7 +33,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponseDTO> handleAlreadyCancelled(OrderAlreadyCancelledException ex,
             HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponseDTO(
-                409, "Conflicto", "ORDEN_YA_CANCELADA",
+                409, "Conflict", "ORDER_ALREADY_CANCELLED",
                 ex.getMessage(), request.getRequestURI()));
     }
 
@@ -39,7 +41,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponseDTO> handleInvalidProduct(InvalidProductException ex,
             HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDTO(
-                400, "Producto Inválido", "PRODUCTO_INVALIDO",
+                400, BAD_REQUEST, "INVALID_PRODUCT",
                 ex.getMessage(), request.getRequestURI()));
     }
 
@@ -47,7 +49,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponseDTO> handlePriceMismatch(PriceMismatchException ex,
             HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponseDTO(
-                409, "Precio No Coincide", "PRECIO_NO_COINCIDE",
+                409, "Conflict", "PRICE_MISMATCH",
                 ex.getMessage(), request.getRequestURI()));
     }
 
@@ -55,7 +57,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponseDTO> handleIllegalArgument(IllegalArgumentException ex,
             HttpServletRequest request) {
         return ResponseEntity.badRequest().body(new ErrorResponseDTO(
-                400, "Datos Inválidos", "DATOS_INVALIDOS",
+                400, BAD_REQUEST, "INVALID_ARGUMENT",
                 ex.getMessage(), request.getRequestURI()));
     }
 
@@ -66,8 +68,8 @@ public class GlobalExceptionHandler {
                 .map(e -> e.getField() + ": " + e.getDefaultMessage())
                 .toList();
         return ResponseEntity.badRequest().body(new ErrorResponseDTO(
-                400, "Datos Inválidos", "DATOS_INVALIDOS",
-                "Los campos enviados no cumplen con las validaciones requeridas.",
+                400, BAD_REQUEST, "VALIDATION_ERROR",
+                "Request fields failed validation.",
                 request.getRequestURI(), details));
     }
 
@@ -75,8 +77,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponseDTO> handleNotReadable(HttpMessageNotReadableException ex,
             HttpServletRequest request) {
         return ResponseEntity.badRequest().body(new ErrorResponseDTO(
-                400, "Error de Formato JSON", "ERROR_FORMATO_DATOS",
-                "El JSON enviado tiene un formato incorrecto o un tipo de dato inválido.",
+                400, BAD_REQUEST, "INVALID_JSON_FORMAT",
+                "The request body has an invalid format or an unsupported value.",
                 request.getRequestURI()));
     }
 
@@ -84,8 +86,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponseDTO> handleGeneric(Exception ex, HttpServletRequest request) {
         ex.printStackTrace();
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorResponseDTO(
-                500, "Error Interno", "ERROR_INTERNO",
-                "Ocurrió un error inesperado en el servidor.",
+                500, "Internal Server Error", "INTERNAL_ERROR",
+                "An unexpected error occurred.",
                 request.getRequestURI()));
     }
 }

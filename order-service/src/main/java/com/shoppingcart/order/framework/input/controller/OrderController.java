@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.shoppingcart.order.aplicacion.command.port.input.CancelOrder;
 import com.shoppingcart.order.aplicacion.command.port.input.CreateOrder;
+import com.shoppingcart.order.aplicacion.command.port.input.MarkOrderAsPaid;
+import com.shoppingcart.order.aplicacion.command.port.input.RevertOrderToPending;
 import com.shoppingcart.order.aplicacion.query.port.input.GetOrder;
 import com.shoppingcart.order.aplicacion.query.port.input.ListOrdersByCustomer;
 import com.shoppingcart.order.framework.input.dto.CreateOrderRequest;
@@ -29,42 +31,51 @@ public class OrderController {
 
     private final CreateOrder createOrder;
     private final CancelOrder cancelOrder;
+    private final MarkOrderAsPaid markOrderAsPaid;
+    private final RevertOrderToPending revertOrderToPending;
     private final GetOrder getOrder;
     private final ListOrdersByCustomer listOrdersByCustomer;
 
     public OrderController(CreateOrder createOrder, CancelOrder cancelOrder,
+            MarkOrderAsPaid markOrderAsPaid, RevertOrderToPending revertOrderToPending,
             GetOrder getOrder, ListOrdersByCustomer listOrdersByCustomer) {
         this.createOrder = createOrder;
         this.cancelOrder = cancelOrder;
+        this.markOrderAsPaid = markOrderAsPaid;
+        this.revertOrderToPending = revertOrderToPending;
         this.getOrder = getOrder;
         this.listOrdersByCustomer = listOrdersByCustomer;
     }
 
     @PostMapping
     public ResponseEntity<OrderResponse> create(@Valid @RequestBody CreateOrderRequest request) {
-        OrderResponse response = OrderHttpMapper.toResponse(
-                createOrder.create(OrderHttpMapper.toCommand(request)));
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(OrderHttpMapper.toResponse(createOrder.create(OrderHttpMapper.toCommand(request))));
     }
 
     @PatchMapping("/{id}/cancel")
     public ResponseEntity<OrderResponse> cancel(@PathVariable Long id) {
-        OrderResponse response = OrderHttpMapper.toResponse(cancelOrder.cancel(id));
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(OrderHttpMapper.toResponse(cancelOrder.cancel(id)));
+    }
+
+    @PatchMapping("/{id}/pay")
+    public ResponseEntity<OrderResponse> pay(@PathVariable Long id) {
+        return ResponseEntity.ok(OrderHttpMapper.toResponse(markOrderAsPaid.markAsPaid(id)));
+    }
+
+    @PatchMapping("/{id}/revert-payment")
+    public ResponseEntity<OrderResponse> revertPayment(@PathVariable Long id) {
+        return ResponseEntity.ok(OrderHttpMapper.toResponse(revertOrderToPending.revertToPending(id)));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<OrderResponse> getById(@PathVariable Long id) {
-        OrderResponse response = OrderHttpMapper.toResponse(getOrder.getById(id));
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(OrderHttpMapper.toResponse(getOrder.getById(id)));
     }
 
     @GetMapping
     public ResponseEntity<List<OrderResponse>> listByCustomer(@RequestParam Long customerId) {
-        List<OrderResponse> response = listOrdersByCustomer.listByCustomer(customerId)
-                .stream()
-                .map(OrderHttpMapper::toResponse)
-                .toList();
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(listOrdersByCustomer.listByCustomer(customerId)
+                .stream().map(OrderHttpMapper::toResponse).toList());
     }
 }

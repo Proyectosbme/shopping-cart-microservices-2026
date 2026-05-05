@@ -15,9 +15,9 @@ public class OrderDetail {
     private OrderDetail(Long id, Long productId, String productName,
             Quantity quantity, BigDecimal unitPrice) {
         if (productId == null)
-            throw new IllegalArgumentException("El id del producto no puede ser nulo");
+            throw new IllegalArgumentException("Product id cannot be null");
         if (unitPrice == null || unitPrice.compareTo(BigDecimal.ZERO) < 0)
-            throw new IllegalArgumentException("El precio unitario no puede ser negativo");
+            throw new IllegalArgumentException("Unit price cannot be negative");
         this.id = id;
         this.productId = productId;
         this.productName = productName;
@@ -25,13 +25,11 @@ public class OrderDetail {
         this.unitPrice = unitPrice;
     }
 
-    // Factory method — nuevo detalle de orden
     public static OrderDetail create(Long productId, String productName,
             Quantity quantity, BigDecimal unitPrice) {
         return new OrderDetail(null, productId, productName, quantity, unitPrice);
     }
 
-    // Factory method — reconstruir desde persistencia
     public static OrderDetail reconstitute(Long id, Long productId, String productName,
             Quantity quantity, BigDecimal unitPrice) {
         return new OrderDetail(id, productId, productName, quantity, unitPrice);
@@ -41,23 +39,9 @@ public class OrderDetail {
         return unitPrice.multiply(BigDecimal.valueOf(quantity.value()));
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public Long getProductId() {
-        return productId;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public Quantity getQuantity() {
-        return quantity;
-    }
-
-    public BigDecimal getUnitPrice() {
-        return unitPrice;
-    }
+    public Long getId() { return id; }
+    public Long getProductId() { return productId; }
+    public String getProductName() { return productName; }
+    public Quantity getQuantity() { return quantity; }
+    public BigDecimal getUnitPrice() { return unitPrice; }
 }

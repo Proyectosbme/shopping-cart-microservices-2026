@@ -11,33 +11,33 @@ import jakarta.validation.constraints.Positive;
 
 public record CreateOrderRequest(
 
-        @NotNull(message = "El id del cliente es obligatorio")
+        @NotNull(message = "Customer id is required")
         Long customerId,
 
-        @NotBlank(message = "El nombre del cliente es obligatorio")
+        @NotBlank(message = "Customer name is required")
         String customerName,
 
-        @NotBlank(message = "El email del cliente es obligatorio")
-        @Email(message = "El email del cliente no es válido")
+        @NotBlank(message = "Customer email is required")
+        @Email(message = "Customer email is not valid")
         String customerEmail,
 
-        @NotEmpty(message = "La orden debe tener al menos un detalle")
+        @NotEmpty(message = "Order must have at least one detail")
         @Valid
         List<OrderDetailRequest> details
 
 ) {
     public record OrderDetailRequest(
 
-            @NotNull(message = "El id del producto es obligatorio")
+            @NotNull(message = "Product id is required")
             Long productId,
 
-            @NotBlank(message = "El nombre del producto es obligatorio")
+            @NotBlank(message = "Product name is required")
             String productName,
 
-            @Positive(message = "La cantidad debe ser mayor a cero")
+            @Positive(message = "Quantity must be greater than zero")
             int quantity,
 
-            @Positive(message = "El precio unitario debe ser mayor a cero")
+            @Positive(message = "Unit price must be greater than zero")
             double unitPrice
     ) {}
 }

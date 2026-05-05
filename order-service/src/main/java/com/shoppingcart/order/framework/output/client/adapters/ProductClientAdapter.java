@@ -23,7 +23,7 @@ public class ProductClientAdapter {
             ProductClientDto product = restTemplate.getForObject(url, ProductClientDto.class);
             return Optional.ofNullable(product);
         } catch (RestClientException e) {
-            throw new RuntimeException("Error al consultar producto con ID: " + productId, e);
+            throw new RuntimeException("Error fetching product with ID: " + productId, e);
         }
     }
 
@@ -31,6 +31,6 @@ public class ProductClientAdapter {
         return getProductById(productId)
                 .map(ProductClientDto::price)
                 .orElseThrow(() -> new RuntimeException(
-                        "Producto con ID " + productId + " no encontrado en Product Service"));
+                        "Product with ID " + productId + " not found in Product Service"));
     }
 }

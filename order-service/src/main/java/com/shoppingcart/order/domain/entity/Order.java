@@ -28,29 +28,20 @@ public class Order {
         this.createdAt = createdAt;
     }
 
-    // Factory method — nueva orden
     public static Order create(Customer customer, List<OrderDetail> details) {
         if (details == null || details.isEmpty())
-            throw new IllegalArgumentException("La orden debe tener al menos un detalle");
-        return new Order(
-                new OrderId(null),
-                customer,
-                details,
-                OrderStatus.PENDING,
-                LocalDateTime.now());
+            throw new IllegalArgumentException("Order must have at least one detail");
+        return new Order(new OrderId(null), customer, details, OrderStatus.PENDING, LocalDateTime.now());
     }
 
-    // Factory method — reconstruir desde persistencia
     public static Order reconstitute(Long id, Customer customer,
-            List<OrderDetail> details,
-            OrderStatus status, LocalDateTime createdAt) {
+            List<OrderDetail> details, OrderStatus status, LocalDateTime createdAt) {
         return new Order(new OrderId(id), customer, details, status, createdAt);
     }
 
-    // Lógica de negocio
     public void confirm() {
         if (this.status != OrderStatus.PENDING)
-            throw new IllegalStateException("Solo las órdenes en estado PENDIENTE pueden confirmarse");
+            throw new IllegalStateException("Only PENDING orders can be confirmed");
         this.status = OrderStatus.CONFIRMED;
     }
 
@@ -58,14 +49,20 @@ public class Order {
         if (this.status == OrderStatus.CANCELLED)
             throw new OrderAlreadyCancelledException(this.id);
         if (this.status == OrderStatus.PAID)
-            throw new IllegalStateException("No se puede cancelar una orden que ya fue pagada");
+            throw new IllegalStateException("A paid order cannot be cancelled");
         this.status = OrderStatus.CANCELLED;
     }
 
     public void markAsPaid() {
-        if (this.status != OrderStatus.CONFIRMED)
-            throw new IllegalStateException("Solo las órdenes en estado CONFIRMADO pueden marcarse como pagadas");
+        if (this.status != OrderStatus.PENDING && this.status != OrderStatus.CONFIRMED)
+            throw new IllegalStateException("Only PENDING or CONFIRMED orders can be marked as paid");
         this.status = OrderStatus.PAID;
+    }
+
+    public void revertToPending() {
+        if (this.status != OrderStatus.PAID)
+            throw new IllegalStateException("Only PAID orders can be reverted to pending");
+        this.status = OrderStatus.PENDING;
     }
 
     public BigDecimal total() {
@@ -74,23 +71,9 @@ public class Order {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    public OrderId getId() {
-        return id;
-    }
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public List<OrderDetail> getDetails() {
-        return Collections.unmodifiableList(details);
-    }
-
-    public OrderStatus getStatus() {
-        return status;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
+    public OrderId getId() { return id; }
+    public Customer getCustomer() { return customer; }
+    public List<OrderDetail> getDetails() { return Collections.unmodifiableList(details); }
+    public OrderStatus getStatus() { return status; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
 }
