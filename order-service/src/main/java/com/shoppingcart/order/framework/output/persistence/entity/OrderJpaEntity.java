@@ -1,4 +1,4 @@
-package com.shoppingcart.order.framework.output.persistence.entidad;
+package com.shoppingcart.order.framework.output.persistence.entity;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
