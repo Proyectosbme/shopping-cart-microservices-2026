@@ -28,8 +28,9 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public OrderCommandService orderCommandService(OrderCommandRepository orderCommandRepository) {
-        return new OrderCommandService(orderCommandRepository);
+    public OrderCommandService orderCommandService(OrderCommandRepository orderCommandRepository,
+            ProductClientAdapter productClientAdapter) {
+        return new OrderCommandService(orderCommandRepository, productClientAdapter);
     }
 
     @Bean

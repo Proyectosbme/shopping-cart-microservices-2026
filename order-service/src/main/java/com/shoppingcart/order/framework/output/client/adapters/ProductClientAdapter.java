@@ -5,9 +5,10 @@ import java.util.Optional;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import com.shoppingcart.order.application.command.port.output.ProductValidationPort;
 import com.shoppingcart.order.framework.output.client.dto.ProductClientDto;
 
-public class ProductClientAdapter {
+public class ProductClientAdapter implements ProductValidationPort {
 
     private final RestTemplate restTemplate;
     private final String productServiceUrl;
