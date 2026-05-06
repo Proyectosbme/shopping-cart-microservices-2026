@@ -26,6 +26,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
+/**
+ * REST controller that exposes the payment management API under {@code /api/payments}.
+ *
+ * <p>Acts as the primary input adapter: translates incoming HTTP requests into application
+ * port calls and maps resulting domain objects back to HTTP responses via
+ * {@link PaymentHttpMapper}. All endpoints require a valid JWT token.</p>
+ */
 @Tag(name = "Payments", description = "Payment processing and refunds")
 @RestController
 @RequestMapping("/api/payments")
@@ -36,6 +43,12 @@ public class PaymentController {
     private final GetPayment getPayment;
     private final GetPaymentsByOrder getPaymentsByOrder;
 
+    /**
+     * @param processPayment      port for processing a new payment
+     * @param refundPayment       port for refunding an existing payment
+     * @param getPayment          port for retrieving a payment by ID
+     * @param getPaymentsByOrder  port for listing payments by order
+     */
     public PaymentController(ProcessPayment processPayment, RefundPayment refundPayment,
             GetPayment getPayment, GetPaymentsByOrder getPaymentsByOrder) {
         this.processPayment = processPayment;
@@ -44,6 +57,12 @@ public class PaymentController {
         this.getPaymentsByOrder = getPaymentsByOrder;
     }
 
+    /**
+     * Processes a payment for the order specified in the request body.
+     *
+     * @param request the validated payment request
+     * @return 201 Created with the processed {@link PaymentResponse}
+     */
     @Operation(summary = "Process a payment for an order")
     @ApiResponse(responseCode = "201", description = "Payment processed successfully")
     @ApiResponse(responseCode = "400", description = "Invalid payment data")
@@ -53,6 +72,12 @@ public class PaymentController {
                 .body(PaymentHttpMapper.toResponse(processPayment.process(PaymentHttpMapper.toCommand(request))));
     }
 
+    /**
+     * Refunds the payment with the given ID and reverts the associated order to pending.
+     *
+     * @param id the numeric identifier of the payment to refund
+     * @return 200 OK with the updated {@link PaymentResponse}
+     */
     @Operation(summary = "Refund a payment")
     @ApiResponse(responseCode = "200", description = "Payment refunded")
     @ApiResponse(responseCode = "404", description = "Payment not found")
@@ -61,6 +86,12 @@ public class PaymentController {
         return ResponseEntity.ok(PaymentHttpMapper.toResponse(refundPayment.refund(id)));
     }
 
+    /**
+     * Retrieves the payment with the given ID.
+     *
+     * @param id the numeric identifier of the payment
+     * @return 200 OK with the {@link PaymentResponse}, or 404 if not found
+     */
     @Operation(summary = "Get payment by ID")
     @ApiResponse(responseCode = "200", description = "Payment found")
     @ApiResponse(responseCode = "404", description = "Payment not found")
@@ -69,6 +100,12 @@ public class PaymentController {
         return ResponseEntity.ok(PaymentHttpMapper.toResponse(getPayment.getById(id)));
     }
 
+    /**
+     * Returns all payments associated with the given order.
+     *
+     * @param orderId the identifier of the order whose payments are to be listed
+     * @return 200 OK with a (possibly empty) list of {@link PaymentResponse}
+     */
     @Operation(summary = "Get payments by order ID")
     @ApiResponse(responseCode = "200", description = "List of payments for the order")
     @GetMapping

@@ -18,6 +18,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * JPA entity mapped to the {@code payments} table.
+ *
+ * <p>Represents the persisted state of a payment. Both {@link com.shoppingcart.payment.domain.vo.PaymentStatus}
+ * and {@link com.shoppingcart.payment.domain.vo.PaymentMethod} are stored as strings
+ * ({@link EnumType#STRING}) to keep the schema readable and resilient to enum reordering.</p>
+ */
 @Getter
 @Setter
 @NoArgsConstructor
