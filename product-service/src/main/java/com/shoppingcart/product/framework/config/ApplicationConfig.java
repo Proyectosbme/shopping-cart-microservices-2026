@@ -3,9 +3,9 @@ package com.shoppingcart.product.framework.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.shoppingcart.product.application.query.port.input.GetProduct;
-import com.shoppingcart.product.application.query.port.input.ListProducts;
-import com.shoppingcart.product.application.query.port.input.ListProductsByCategory;
+import com.shoppingcart.product.application.query.port.input.GetProductPort;
+import com.shoppingcart.product.application.query.port.input.ListProductsPort;
+import com.shoppingcart.product.application.query.port.input.ListProductsByCategoryPort;
 import com.shoppingcart.product.application.query.port.output.ProductRepository;
 import com.shoppingcart.product.application.query.service.ProductService;
 
@@ -19,17 +19,17 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public ListProducts listProducts() {
+    public ListProductsPort listProducts() {
         return new ProductService(productRepository);
     }
 
     @Bean
-    public GetProduct getProduct() {
+    public GetProductPort getProduct() {
         return new ProductService(productRepository);
     }
 
     @Bean
-    public ListProductsByCategory listProductsByCategory() {
+    public ListProductsByCategoryPort listProductsByCategory() {
         return new ProductService(productRepository);
     }
 }

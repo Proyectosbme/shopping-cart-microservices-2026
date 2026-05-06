@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.shoppingcart.product.application.query.port.input.GetProduct;
-import com.shoppingcart.product.application.query.port.input.ListProducts;
-import com.shoppingcart.product.application.query.port.input.ListProductsByCategory;
+import com.shoppingcart.product.application.query.port.input.GetProductPort;
+import com.shoppingcart.product.application.query.port.input.ListProductsPort;
+import com.shoppingcart.product.application.query.port.input.ListProductsByCategoryPort;
 import com.shoppingcart.product.domain.vo.ProductId;
 import com.shoppingcart.product.framework.input.dto.ProductResponseDTO;
 import com.shoppingcart.product.framework.input.mapper.ProductResponseMapper;
@@ -26,9 +26,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ProductController {
 
-    private final ListProducts listProducts;
-    private final GetProduct getProduct;
-    private final ListProductsByCategory listProductsByCategory;
+    private final ListProductsPort listProducts;
+    private final GetProductPort getProduct;
+    private final ListProductsByCategoryPort listProductsByCategory;
     private final ProductResponseMapper mapper;
 
     @Operation(summary = "List all products")

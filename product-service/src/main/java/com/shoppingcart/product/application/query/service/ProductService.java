@@ -2,9 +2,9 @@ package com.shoppingcart.product.application.query.service;
 
 
 
-import com.shoppingcart.product.application.query.port.input.GetProduct;
-import com.shoppingcart.product.application.query.port.input.ListProductsByCategory;
-import com.shoppingcart.product.application.query.port.input.ListProducts;
+import com.shoppingcart.product.application.query.port.input.GetProductPort;
+import com.shoppingcart.product.application.query.port.input.ListProductsByCategoryPort;
+import com.shoppingcart.product.application.query.port.input.ListProductsPort;
 import com.shoppingcart.product.application.query.port.output.ProductRepository;
 import com.shoppingcart.product.application.query.usecase.GetProductUseCase;
 import com.shoppingcart.product.application.query.usecase.ListProductsByCategoryUseCase;
@@ -15,9 +15,9 @@ import com.shoppingcart.product.domain.vo.ProductId;
 import java.util.List;
 
 public class ProductService implements
-        ListProducts,
-        GetProduct,
-        ListProductsByCategory {
+        ListProductsPort,
+        GetProductPort,
+        ListProductsByCategoryPort {
 
     private final GetProductUseCase getProductUseCase;
     private final ListProductsUseCase listProductsUseCase;

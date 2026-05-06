@@ -1,9 +1,8 @@
 package com.shoppingcart.product.application.query.port.input;
 
-import java.util.List;
-
 import com.shoppingcart.product.domain.entity.Product;
+import com.shoppingcart.product.domain.vo.ProductId;
 
-public interface ListProductsByCategory {
-    List<Product> execute(String category);
+public interface GetProductPort {
+    Product execute(ProductId id);
 }
