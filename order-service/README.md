@@ -1,6 +1,11 @@
 # Order Service
 
-Manages order creation, cancellation, and status transitions. Validates products against the product-service before creating an order, and exposes endpoints for the payment-service to mark orders as paid or revert them.
+Manages the full order lifecycle: creation, cancellation, payment marking, and payment reversion. Validates product prices against the product-service before persisting a new order.
+
+- **Port**: `8083`
+- **Auth**: None — all endpoints are public
+- **Database**: H2 in-memory (`orderdb`)
+- **Dependencies**: product-service (for price validation on order creation)
 
 ## API Documentation
 
@@ -11,27 +16,36 @@ Swagger UI: http://localhost:8083/swagger-ui/index.html
 Hexagonal (ports & adapters) with CQRS separation:
 
 ```
-domain/          — Entities, value objects, domain exceptions (no framework dependencies)
+domain/          — Order, Customer, OrderDetail entities; value objects (OrderId, Quantity, OrderStatus); domain exceptions
 application/
-  command/       — Create and cancel order use cases, input/output ports
-  query/         — Get and list order use cases, input/output ports
+  command/       — CreateOrder, CancelOrder, MarkOrderAsPaid, RevertOrderToPending use cases and ports
+  query/         — GetOrder, ListOrdersByCustomer use cases and ports
 framework/
-  config/        — Spring config, bean wiring
+  config/        — Spring config and bean wiring
   exceptions/    — Global exception handler
   input/         — REST controller and request/response DTOs
-  output/        — JPA entity, repository, persistence adapter, HTTP client
+  output/        — JPA entities, repository, persistence adapter, HTTP client to product-service
 ```
 
 ## Endpoints
 
-| Method | Path | Description |
-|--------|------|-------------|
-| POST | `/api/orders` | Create a new order |
-| GET | `/api/orders/{id}` | Get order by ID |
-| GET | `/api/orders?customerId={id}` | List orders by customer |
-| PATCH | `/api/orders/{id}/cancel` | Cancel an order |
-| PATCH | `/api/orders/{id}/pay` | Mark order as paid (called by payment-service) |
-| PATCH | `/api/orders/{id}/revert` | Revert order to pending (called by payment-service) |
+| Method | Path | Caller | Description |
+|--------|------|--------|-------------|
+| POST | `/api/orders` | Client | Create a new order |
+| GET | `/api/orders/{id}` | Client / payment-service | Get order by ID |
+| GET | `/api/orders?customerId={id}` | Client | List orders by customer |
+| PATCH | `/api/orders/{id}/cancel` | Client | Cancel an order |
+| PATCH | `/api/orders/{id}/pay` | payment-service | Mark order as paid |
+| PATCH | `/api/orders/{id}/revert-payment` | payment-service | Revert paid order back to pending |
+
+### Order Status Flow
+
+```
+PENDING → CONFIRMED → PAID
+PENDING → CANCELLED
+CONFIRMED → CANCELLED
+PAID → PENDING  (revert-payment)
+```
 
 ### Create Order
 
@@ -46,30 +60,60 @@ Content-Type: application/json
   "details": [
     {
       "productId": 1,
-      "productName": "Product Name",
+      "productName": "Fjallraven - Foldsack No. 1 Backpack",
       "quantity": 2,
-      "unitPrice": 29.99
+      "unitPrice": 109.95
     }
   ]
 }
 ```
 
-## Setup
-
-```bash
-mvn spring-boot:run
+```json
+HTTP 201 Created
+{
+  "id": 1,
+  "customerId": 1,
+  "customerName": "John Doe",
+  "customerEmail": "john@example.com",
+  "status": "PENDING",
+  "createdAt": "2025-05-06T10:00:00",
+  "total": 219.90,
+  "details": [...]
+}
 ```
 
-The H2 console is available at `http://localhost:8083/h2-console` (JDBC URL: `jdbc:h2:mem:orderdb`).
+> The `unitPrice` is validated against the product-service catalog. The request is rejected with `409 PRICE_MISMATCH` if the prices differ.
+
+## Error Responses
+
+| HTTP | Error Code | Cause |
+|------|-----------|-------|
+| 404 | `ORDER_NOT_FOUND` | No order found for the given ID |
+| 409 | `ORDER_ALREADY_CANCELLED` | Cannot cancel an already-cancelled order |
+| 409 | `PRICE_MISMATCH` | Client price does not match the catalog |
+| 400 | `INVALID_PRODUCT` | Product does not exist or is unavailable |
+| 400 | `INVALID_ARGUMENT` | Empty order details or invalid values |
+| 400 | `VALIDATION_ERROR` | Request body failed Bean Validation |
 
 ## Environment Variables
 
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `SERVER_PORT` | `8083` | Service port |
-| `ORDER_SERVICE_URL` | `http://localhost:8083/api/orders` | Self-reference used by payment-service |
 | `PRODUCT_SERVICE_URL` | `http://localhost:8080/api/products` | Product-service base URL |
+| `DB_USERNAME` | `sa` | H2 datasource username |
+| `DB_PASSWORD` | _(empty)_ | H2 datasource password |
 
-## Dependencies
+## H2 Console
 
-Requires **product-service** to be running for order creation (product validation).
+Available at http://localhost:8083/h2-console
+
+- **JDBC URL**: `jdbc:h2:mem:orderdb`
+- **Username**: `sa`
+- **Password**: _(empty)_
+
+## Running
+
+```bash
+mvn spring-boot:run
+```

@@ -1,6 +1,10 @@
 # Auth Service
 
-Handles user registration and login. Issues JWT tokens that are shared and validated by other services (e.g. payment-service).
+Handles user registration and login. Issues JWT tokens signed with HS256 that are validated by other services (e.g. payment-service).
+
+- **Port**: `8081`
+- **Auth**: None — all endpoints are public
+- **Database**: H2 in-memory (`authdb`)
 
 ## API Documentation
 
@@ -11,12 +15,12 @@ Swagger UI: http://localhost:8081/swagger-ui/index.html
 Hexagonal (ports & adapters) with CQRS separation:
 
 ```
-domain/          — Entities, value objects, domain exceptions (no framework dependencies)
+domain/          — User entity, value objects (Email, Password, Role), domain exceptions
 application/
-  command/       — Register and login use cases, input/output ports
-  query/         — Find user use case, input/output ports
+  command/       — RegisterUser and LoginUser use cases, input/output ports
+  query/         — FindUser use case, input/output ports
 framework/
-  config/        — Spring Security, JWT service, password encoder, bean wiring
+  config/        — Spring Security, JWT service, password encoder adapter, bean wiring
   exceptions/    — Global exception handler
   input/         — REST controller and request/response DTOs
   output/        — JPA entity, repository, persistence adapter, mapper
@@ -67,29 +71,39 @@ HTTP 200 OK
 }
 ```
 
-## Setup
+## Error Responses
 
-1. Copy the example env file and fill in your values:
-
-```bash
-cp .env.example .env
-```
-
-2. Run the service:
-
-```bash
-./mvnw spring-boot:run
-```
-
-The H2 console is available at `http://localhost:8080/h2-console` (JDBC URL: `jdbc:h2:mem:authdb`).
+| HTTP | Error Code | Cause |
+|------|-----------|-------|
+| 400 | `INVALID_EMAIL` | Email format is invalid |
+| 400 | `INVALID_PASSWORD` | Password does not meet requirements |
+| 409 | `USER_ALREADY_EXISTS` | Email is already registered |
+| 401 | `INVALID_CREDENTIALS` | Wrong email or password |
 
 ## Environment Variables
 
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| `JWT_SECRET` | Yes | — | Signing secret, min 32 chars. Must match across services |
-| `JWT_EXPIRATION` | No | `86400000` | Token TTL in milliseconds (default 24h) |
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `SERVER_PORT` | `8081` | Service port |
+| `JWT_SECRET` | `miClaveSecretaMuyLarga1234567890AbcDef` | Signing secret — must match across all services that validate tokens |
+| `JWT_EXPIRATION` | `86400000` | Token TTL in milliseconds (default 24 h) |
+| `DB_USERNAME` | `sa` | H2 datasource username |
+| `DB_PASSWORD` | _(empty)_ | H2 datasource password |
 
 ## JWT Shared Secret
 
-The `JWT_SECRET` must be identical in every service that validates tokens (e.g. payment-service). Tokens are signed with HS256.
+The `JWT_SECRET` must be identical in every service that validates tokens (currently payment-service). Tokens are signed with **HS256**.
+
+## H2 Console
+
+Available at http://localhost:8081/h2-console
+
+- **JDBC URL**: `jdbc:h2:mem:authdb`
+- **Username**: `sa`
+- **Password**: _(empty)_
+
+## Running
+
+```bash
+mvn spring-boot:run
+```
