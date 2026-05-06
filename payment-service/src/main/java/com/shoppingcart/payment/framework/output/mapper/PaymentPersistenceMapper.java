@@ -1,7 +1,7 @@
 package com.shoppingcart.payment.framework.output.mapper;
 
 import com.shoppingcart.payment.domain.entity.Payment;
-import com.shoppingcart.payment.framework.output.persistence.entidad.PaymentJpaEntity;
+import com.shoppingcart.payment.framework.output.persistence.entity.PaymentJpaEntity;
 
 public class PaymentPersistenceMapper {
 

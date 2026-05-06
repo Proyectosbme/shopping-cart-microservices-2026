@@ -23,7 +23,8 @@ public class OrderClientAdapter implements OrderValidationPort, OrderStatusPort 
     public OrderClientDto getOrderIfValid(Long orderId) {
         try {
             OrderClientDto order = restTemplate.getForObject(orderServiceUrl + "/" + orderId, OrderClientDto.class);
-            if (order == null) throw new OrderNotFoundException(orderId);
+            if (order == null)
+                throw new OrderNotFoundException(orderId);
             if ("CANCELLED".equals(order.status()) || "PAID".equals(order.status()))
                 throw new OrderNotValidForPaymentException(orderId, order.status());
             return order;

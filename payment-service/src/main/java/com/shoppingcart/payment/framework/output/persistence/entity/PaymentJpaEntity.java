@@ -1,4 +1,4 @@
-package com.shoppingcart.payment.framework.output.persistence.entidad;
+package com.shoppingcart.payment.framework.output.persistence.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
