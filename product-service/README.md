@@ -5,6 +5,10 @@ Proxy microservice to [FakeStore API](https://fakestoreapi.com). Exposes product
 - **Port**: 8080
 - **Dependencies**: None (external API only)
 
+## API Documentation
+
+Swagger UI: http://localhost:8080/swagger-ui/index.html
+
 ## Endpoints
 
 | Method | Path | Description |

@@ -2,13 +2,17 @@
 
 Manages order creation, cancellation, and status transitions. Validates products against the product-service before creating an order, and exposes endpoints for the payment-service to mark orders as paid or revert them.
 
+## API Documentation
+
+Swagger UI: http://localhost:8083/swagger-ui/index.html
+
 ## Architecture
 
 Hexagonal (ports & adapters) with CQRS separation:
 
 ```
 domain/          — Entities, value objects, domain exceptions (no framework dependencies)
-aplicacion/
+application/
   command/       — Create and cancel order use cases, input/output ports
   query/         — Get and list order use cases, input/output ports
 framework/

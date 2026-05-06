@@ -2,13 +2,17 @@
 
 Simulates payment processing. Validates that the order exists and is in a payable state before processing, then notifies the order-service to update the order status.
 
+## API Documentation
+
+Swagger UI: http://localhost:8082/swagger-ui/index.html
+
 ## Architecture
 
 Hexagonal (ports & adapters) with CQRS separation:
 
 ```
 domain/          — Entities, value objects, domain exceptions (no framework dependencies)
-aplicacion/
+application/
   command/       — Process and revert payment use cases, input/output ports
   query/         — Get payment use cases, input/output ports
 framework/

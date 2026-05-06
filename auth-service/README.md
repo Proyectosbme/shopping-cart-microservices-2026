@@ -2,13 +2,17 @@
 
 Handles user registration and login. Issues JWT tokens that are shared and validated by other services (e.g. payment-service).
 
+## API Documentation
+
+Swagger UI: http://localhost:8081/swagger-ui/index.html
+
 ## Architecture
 
 Hexagonal (ports & adapters) with CQRS separation:
 
 ```
 domain/          — Entities, value objects, domain exceptions (no framework dependencies)
-aplicacion/
+application/
   command/       — Register and login use cases, input/output ports
   query/         — Find user use case, input/output ports
 framework/

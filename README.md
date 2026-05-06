@@ -11,13 +11,24 @@ A shopping cart system built with Spring Boot following hexagonal architecture a
 | [payment-service](./payment-service) | 8082 | Payment simulation with order validation |
 | [order-service](./order-service) | 8083 | Order lifecycle management |
 
+## API Documentation
+
+Each service exposes interactive API docs via Swagger UI once running:
+
+| Service | Swagger UI |
+|---------|-----------|
+| product-service | http://localhost:8080/swagger-ui/index.html |
+| auth-service | http://localhost:8081/swagger-ui/index.html |
+| payment-service | http://localhost:8082/swagger-ui/index.html |
+| order-service | http://localhost:8083/swagger-ui/index.html |
+
 ## Architecture
 
 Each service follows **Hexagonal Architecture (Ports & Adapters)** with CQRS separation:
 
 ```
 domain/         ← Entities, value objects, domain exceptions (no framework dependencies)
-aplicacion/
+application/
   command/      ← Write use cases, input/output ports
   query/        ← Read use cases, input/output ports
 framework/
