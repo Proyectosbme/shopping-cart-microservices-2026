@@ -20,6 +20,21 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * REST controller for product-related endpoints.
+ * 
+ * This controller handles HTTP requests from clients and exposes the product
+ * query operations through REST endpoints. It acts as an adapter between the
+ * external HTTP interface and the application layer's input ports.
+ * 
+ * The controller:
+ * - Receives HTTP requests on /api/products endpoint
+ * - Delegates business logic to input ports (GetProductPort, ListProductsPort, ListProductsByCategoryPort)
+ * - Maps domain entities to response DTOs
+ * - Returns properly formatted HTTP responses
+ * 
+ * All endpoints are documented with OpenAPI/Swagger annotations for API documentation.
+ */
 @Tag(name = "Products", description = "Product catalog")
 @RestController
 @RequestMapping("/api/products")
@@ -31,6 +46,15 @@ public class ProductController {
     private final ListProductsByCategoryPort listProductsByCategory;
     private final ProductResponseMapper mapper;
 
+    /**
+     * Retrieves all available products.
+     * 
+     * HTTP GET endpoint: /api/products
+     * Returns a list of all products in the catalog.
+     * 
+     * @return a ResponseEntity containing a list of ProductResponseDTO
+     * @response 200 OK - List of products successfully retrieved
+     */
     @Operation(summary = "List all products")
     @ApiResponse(responseCode = "200", description = "List of products")
     @GetMapping
@@ -41,6 +65,17 @@ public class ProductController {
                         .toList());
     }
 
+    /**
+     * Retrieves a single product by its ID.
+     * 
+     * HTTP GET endpoint: /api/products/{id}
+     * Returns detailed information about a specific product.
+     * 
+     * @param id the product identifier from the URL path
+     * @return a ResponseEntity containing the ProductResponseDTO
+     * @response 200 OK - Product found and returned
+     * @response 404 Not Found - Product with the specified ID does not exist
+     */
     @Operation(summary = "Get product by ID")
     @ApiResponse(responseCode = "200", description = "Product found")
     @ApiResponse(responseCode = "404", description = "Product not found")
@@ -49,6 +84,16 @@ public class ProductController {
         return ResponseEntity.ok(mapper.toDTO(getProduct.execute(new ProductId(id))));
     }
 
+    /**
+     * Retrieves all products in a specific category.
+     * 
+     * HTTP GET endpoint: /api/products/category/{category}
+     * Returns a list of products filtered by the specified category name.
+     * 
+     * @param category the category name to filter by from the URL path
+     * @return a ResponseEntity containing a list of ProductResponseDTO in the specified category
+     * @response 200 OK - List of products in the category successfully retrieved
+     */
     @Operation(summary = "List products by category")
     @ApiResponse(responseCode = "200", description = "List of products in the category")
     @GetMapping("/category/{category}")
