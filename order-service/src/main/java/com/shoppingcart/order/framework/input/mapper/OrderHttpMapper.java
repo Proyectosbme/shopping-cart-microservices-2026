@@ -6,8 +6,23 @@ import com.shoppingcart.order.framework.input.dto.CreateOrderRequest;
 import com.shoppingcart.order.framework.input.dto.OrderResponse;
 import com.shoppingcart.order.framework.input.dto.OrderResponse.OrderDetailResponse;
 
+/**
+ * Stateless mapper that converts between HTTP-layer DTOs and application-layer objects.
+ *
+ * <p>All methods are static; this class is not meant to be instantiated. It isolates
+ * the mapping logic from the controller, keeping each class focused on a single
+ * responsibility.</p>
+ */
 public class OrderHttpMapper {
 
+    private OrderHttpMapper() {}
+
+    /**
+     * Converts an HTTP request body into an application-layer command.
+     *
+     * @param request the validated incoming HTTP request
+     * @return a {@link CreateOrderCommand} ready to be passed to the input port
+     */
     public static CreateOrderCommand toCommand(CreateOrderRequest request) {
         return new CreateOrderCommand(
                 request.customerId(),
@@ -22,6 +37,12 @@ public class OrderHttpMapper {
                         .toList());
     }
 
+    /**
+     * Converts a domain {@link Order} aggregate into an HTTP response body.
+     *
+     * @param order the domain order to serialize
+     * @return an {@link OrderResponse} suitable for JSON serialization
+     */
     public static OrderResponse toResponse(Order order) {
         return new OrderResponse(
                 order.getId().value(),

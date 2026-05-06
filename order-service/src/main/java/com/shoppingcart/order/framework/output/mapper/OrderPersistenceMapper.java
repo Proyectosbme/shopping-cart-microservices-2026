@@ -9,8 +9,24 @@ import com.shoppingcart.order.domain.vo.Quantity;
 import com.shoppingcart.order.framework.output.persistence.entity.OrderDetailJpaEntity;
 import com.shoppingcart.order.framework.output.persistence.entity.OrderJpaEntity;
 
+/**
+ * Stateless mapper that converts between domain objects and JPA entities.
+ *
+ * <p>All methods are static; this class is not meant to be instantiated. It isolates
+ * all persistence-mapping concerns from both the domain layer and the adapter class
+ * ({@link com.shoppingcart.order.framework.output.persistence.adapters.OrderPersistenceAdapter}),
+ * keeping each class focused on a single responsibility.</p>
+ */
 public class OrderPersistenceMapper {
 
+    private OrderPersistenceMapper() {}
+
+    /**
+     * Converts a domain {@link Order} aggregate into a JPA entity ready for persistence.
+     *
+     * @param order the domain order to convert
+     * @return a fully populated {@link OrderJpaEntity} including its detail children
+     */
     public static OrderJpaEntity toJpa(Order order) {
         OrderJpaEntity entity = new OrderJpaEntity();
         entity.setId(order.getId().value());
@@ -28,6 +44,12 @@ public class OrderPersistenceMapper {
         return entity;
     }
 
+    /**
+     * Reconstitutes a domain {@link Order} aggregate from a JPA entity loaded from the database.
+     *
+     * @param entity the JPA entity to convert
+     * @return a fully hydrated {@link Order} domain aggregate
+     */
     public static Order toDomain(OrderJpaEntity entity) {
         Customer customer = Customer.reconstitute(
                 entity.getCustomerId(),
@@ -46,6 +68,13 @@ public class OrderPersistenceMapper {
                 entity.getCreatedAt());
     }
 
+    /**
+     * Converts a single domain {@link OrderDetail} line item into its JPA entity representation.
+     *
+     * @param detail the domain line item to convert
+     * @param order  the parent {@link OrderJpaEntity} to associate this detail with
+     * @return a populated {@link OrderDetailJpaEntity}
+     */
     private static OrderDetailJpaEntity toDetailJpa(OrderDetail detail, OrderJpaEntity order) {
         OrderDetailJpaEntity entity = new OrderDetailJpaEntity();
         entity.setId(detail.getId());
@@ -57,6 +86,12 @@ public class OrderPersistenceMapper {
         return entity;
     }
 
+    /**
+     * Reconstitutes a domain {@link OrderDetail} line item from its JPA entity.
+     *
+     * @param entity the JPA line-item entity to convert
+     * @return a fully hydrated {@link OrderDetail} domain object
+     */
     private static OrderDetail toDetailDomain(OrderDetailJpaEntity entity) {
         return OrderDetail.reconstitute(
                 entity.getId(),

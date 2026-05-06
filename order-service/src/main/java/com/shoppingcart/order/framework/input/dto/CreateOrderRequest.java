@@ -9,6 +9,18 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
+/**
+ * Incoming HTTP request body for the create-order endpoint ({@code POST /api/orders}).
+ *
+ * <p>All fields are validated with Bean Validation annotations before the controller
+ * forwards the request to the application layer. Validation errors are collected and
+ * returned as a structured 400 response by {@link com.shoppingcart.order.framework.exceptions.GlobalExceptionHandler}.</p>
+ *
+ * @param customerId    the unique identifier of the customer placing the order
+ * @param customerName  the full name of the customer; must not be blank
+ * @param customerEmail a valid e-mail address for the customer
+ * @param details       one or more product line items; must not be empty
+ */
 public record CreateOrderRequest(
 
         @NotNull(message = "Customer id is required")
@@ -26,6 +38,14 @@ public record CreateOrderRequest(
         List<OrderDetailRequest> details
 
 ) {
+    /**
+     * Nested request object representing a single product line item within the order.
+     *
+     * @param productId   the identifier of the product in the catalog; must not be null
+     * @param productName the display name of the product; must not be blank
+     * @param quantity    the number of units to order; must be greater than zero
+     * @param unitPrice   the price per unit as supplied by the client; must be greater than zero
+     */
     public record OrderDetailRequest(
 
             @NotNull(message = "Product id is required")

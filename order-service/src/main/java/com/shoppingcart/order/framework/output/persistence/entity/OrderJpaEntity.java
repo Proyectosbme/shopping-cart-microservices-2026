@@ -21,6 +21,14 @@ import lombok.Setter;
 
 import com.shoppingcart.order.domain.vo.OrderStatus;
 
+/**
+ * JPA entity mapped to the {@code orders} table.
+ *
+ * <p>Represents the persisted state of a customer order. It owns the one-to-many
+ * relationship with {@link OrderDetailJpaEntity}: cascade ALL and orphan removal ensure
+ * that detail rows are inserted, updated, or deleted automatically alongside their parent.
+ * Equality is based solely on the database primary key.</p>
+ */
 @Entity
 @Table(name = "orders")
 @Getter

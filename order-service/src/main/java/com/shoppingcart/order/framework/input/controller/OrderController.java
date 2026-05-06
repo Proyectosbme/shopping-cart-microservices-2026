@@ -28,6 +28,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
+/**
+ * REST controller that exposes the order management API under {@code /api/orders}.
+ *
+ * <p>Acts as the primary input adapter in the hexagonal architecture: it translates
+ * incoming HTTP requests into application port calls and maps the resulting domain objects
+ * back to HTTP responses via {@link OrderHttpMapper}. It depends exclusively on input port
+ * interfaces, never on concrete service or use-case classes.</p>
+ */
 @Tag(name = "Orders", description = "Order management")
 @RestController
 @RequestMapping("/api/orders")
@@ -40,6 +48,14 @@ public class OrderController {
     private final GetOrder getOrder;
     private final ListOrdersByCustomer listOrdersByCustomer;
 
+    /**
+     * @param createOrder           port for creating a new order
+     * @param cancelOrder           port for cancelling an order
+     * @param markOrderAsPaid       port for marking an order as paid
+     * @param revertOrderToPending  port for reverting a paid order back to pending
+     * @param getOrder              port for retrieving a single order by ID
+     * @param listOrdersByCustomer  port for listing all orders of a customer
+     */
     public OrderController(CreateOrder createOrder, CancelOrder cancelOrder,
             MarkOrderAsPaid markOrderAsPaid, RevertOrderToPending revertOrderToPending,
             GetOrder getOrder, ListOrdersByCustomer listOrdersByCustomer) {
@@ -51,6 +67,12 @@ public class OrderController {
         this.listOrdersByCustomer = listOrdersByCustomer;
     }
 
+    /**
+     * Creates a new order from the validated request body.
+     *
+     * @param request the incoming order creation request
+     * @return 201 Created with the persisted order as {@link OrderResponse}
+     */
     @Operation(summary = "Create a new order")
     @ApiResponse(responseCode = "201", description = "Order created successfully")
     @PostMapping
@@ -59,6 +81,12 @@ public class OrderController {
                 .body(OrderHttpMapper.toResponse(createOrder.create(OrderHttpMapper.toCommand(request))));
     }
 
+    /**
+     * Cancels the order with the given ID.
+     *
+     * @param id the numeric identifier of the order to cancel
+     * @return 200 OK with the updated order, or 404 if not found
+     */
     @Operation(summary = "Cancel an order")
     @ApiResponse(responseCode = "200", description = "Order cancelled")
     @ApiResponse(responseCode = "404", description = "Order not found")
@@ -67,6 +95,12 @@ public class OrderController {
         return ResponseEntity.ok(OrderHttpMapper.toResponse(cancelOrder.cancel(id)));
     }
 
+    /**
+     * Marks the order with the given ID as paid.
+     *
+     * @param id the numeric identifier of the order to mark as paid
+     * @return 200 OK with the updated order, or 404 if not found
+     */
     @Operation(summary = "Mark an order as paid")
     @ApiResponse(responseCode = "200", description = "Order marked as paid")
     @ApiResponse(responseCode = "404", description = "Order not found")
@@ -75,6 +109,12 @@ public class OrderController {
         return ResponseEntity.ok(OrderHttpMapper.toResponse(markOrderAsPaid.markAsPaid(id)));
     }
 
+    /**
+     * Reverts the payment of the order with the given ID, returning it to {@code PENDING} status.
+     *
+     * @param id the numeric identifier of the order to revert
+     * @return 200 OK with the updated order, or 404 if not found
+     */
     @Operation(summary = "Revert an order payment back to pending")
     @ApiResponse(responseCode = "200", description = "Order reverted to pending")
     @ApiResponse(responseCode = "404", description = "Order not found")
@@ -83,6 +123,12 @@ public class OrderController {
         return ResponseEntity.ok(OrderHttpMapper.toResponse(revertOrderToPending.revertToPending(id)));
     }
 
+    /**
+     * Retrieves the order with the given ID.
+     *
+     * @param id the numeric identifier of the order to retrieve
+     * @return 200 OK with the order, or 404 if not found
+     */
     @Operation(summary = "Get order by ID")
     @ApiResponse(responseCode = "200", description = "Order found")
     @ApiResponse(responseCode = "404", description = "Order not found")
@@ -91,6 +137,12 @@ public class OrderController {
         return ResponseEntity.ok(OrderHttpMapper.toResponse(getOrder.getById(id)));
     }
 
+    /**
+     * Returns all orders belonging to the specified customer.
+     *
+     * @param customerId the identifier of the customer whose orders are to be listed
+     * @return 200 OK with a (possibly empty) list of orders
+     */
     @Operation(summary = "List orders by customer")
     @ApiResponse(responseCode = "200", description = "List of orders")
     @GetMapping

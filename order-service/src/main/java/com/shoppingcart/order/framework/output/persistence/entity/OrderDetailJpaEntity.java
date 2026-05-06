@@ -16,6 +16,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * JPA entity mapped to the {@code order_details} table.
+ *
+ * <p>Represents a single product line item persisted as part of an order. It has a
+ * many-to-one relationship with {@link OrderJpaEntity}, loaded lazily to avoid unnecessary
+ * joins when only the parent order is needed. Equality is based solely on the database
+ * primary key to remain consistent with JPA identity semantics.</p>
+ */
 @Entity
 @Table(name = "order_details")
 @Getter
