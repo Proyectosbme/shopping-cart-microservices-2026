@@ -2,10 +2,11 @@ package com.shoppingcart.order.framework.output.client.adapters;
 
 import java.util.Optional;
 
-import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import com.shoppingcart.order.application.command.port.output.ProductValidationPort;
+import com.shoppingcart.order.domain.exceptions.InvalidProductException;
 import com.shoppingcart.order.framework.output.client.dto.ProductClientDto;
 
 /**
@@ -43,20 +44,19 @@ public class ProductClientAdapter implements ProductValidationPort {
             String url = productServiceUrl + "/" + productId;
             ProductClientDto product = restTemplate.getForObject(url, ProductClientDto.class);
             return Optional.ofNullable(product);
-        } catch (RestClientException e) {
-            throw new RuntimeException("Error fetching product with ID: " + productId, e);
+        } catch (HttpClientErrorException.NotFound e) {
+            return Optional.empty();
         }
     }
 
     /**
      * {@inheritDoc}
      *
-     * @throws RuntimeException if the product is not found in the product service
+     * @throws InvalidProductException if the product does not exist in the product service
      */
     public Double getProductPrice(Long productId) {
         return getProductById(productId)
                 .map(ProductClientDto::price)
-                .orElseThrow(() -> new RuntimeException(
-                        "Product with ID " + productId + " not found in Product Service"));
+                .orElseThrow(() -> new InvalidProductException(productId));
     }
 }

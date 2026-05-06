@@ -49,6 +49,7 @@ public record CreateOrderRequest(
     public record OrderDetailRequest(
 
             @NotNull(message = "Product id is required")
+            @Positive(message = "Product id must be a positive number")
             Long productId,
 
             @NotBlank(message = "Product name is required")
