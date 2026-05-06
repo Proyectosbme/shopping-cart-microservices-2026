@@ -18,6 +18,24 @@ import com.shoppingcart.auth.domain.exception.UserNotFoundException;
 
 import jakarta.servlet.http.HttpServletRequest;
 
+/**
+ * Centralised exception handler for the auth-service REST layer.
+ *
+ * <p>Intercepts exceptions thrown by controllers and use cases and converts them into
+ * structured {@link ErrorResponseDTO} responses. Exception-to-HTTP-status mappings:</p>
+ * <ul>
+ *   <li>{@link com.shoppingcart.auth.domain.exception.UserNotFoundException} → 404 Not Found</li>
+ *   <li>{@link com.shoppingcart.auth.domain.exception.UserAlreadyExistsException} → 409 Conflict</li>
+ *   <li>{@link com.shoppingcart.auth.domain.exception.InvalidEmailException} → 400 Bad Request</li>
+ *   <li>{@link com.shoppingcart.auth.domain.exception.InvalidPasswordException} → 400 Bad Request</li>
+ *   <li>{@link com.shoppingcart.auth.domain.exception.InvalidRoleException} → 400 Bad Request</li>
+ *   <li>{@link IllegalArgumentException} → 400 Bad Request</li>
+ *   <li>{@link org.springframework.web.bind.MethodArgumentNotValidException} → 400 Bad Request (with per-field details)</li>
+ *   <li>{@link org.springframework.web.bind.MissingServletRequestParameterException} → 400 Bad Request</li>
+ *   <li>{@link org.springframework.http.converter.HttpMessageNotReadableException} → 400 Bad Request</li>
+ *   <li>{@link Exception} (catch-all) → 500 Internal Server Error</li>
+ * </ul>
+ */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 

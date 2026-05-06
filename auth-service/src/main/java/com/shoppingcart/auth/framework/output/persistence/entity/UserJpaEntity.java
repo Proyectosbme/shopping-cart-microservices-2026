@@ -14,6 +14,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * JPA entity mapped to the {@code users} table.
+ *
+ * <p>Represents the persisted state of a user account. The {@link Role} enum is stored as a
+ * string ({@link EnumType#STRING}) to keep the schema readable and resilient to enum reordering.
+ * The {@code email} column carries a unique constraint enforced at both the database level and
+ * the application layer via {@link com.shoppingcart.auth.application.command.usecase.RegisterUserUseCase}.</p>
+ */
 @Getter
 @Setter
 @NoArgsConstructor
