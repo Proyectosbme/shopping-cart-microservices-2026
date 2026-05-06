@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.shoppingcart.payment.aplicacion.command.port.input.ProcessPayment;
-import com.shoppingcart.payment.aplicacion.command.port.input.RefundPayment;
-import com.shoppingcart.payment.aplicacion.query.port.input.GetPayment;
-import com.shoppingcart.payment.aplicacion.query.port.input.GetPaymentsByOrder;
+import com.shoppingcart.payment.application.command.port.input.ProcessPayment;
+import com.shoppingcart.payment.application.command.port.input.RefundPayment;
+import com.shoppingcart.payment.application.query.port.input.GetPayment;
+import com.shoppingcart.payment.application.query.port.input.GetPaymentsByOrder;
 import com.shoppingcart.payment.framework.input.dto.PaymentResponse;
 import com.shoppingcart.payment.framework.input.dto.ProcessPaymentRequest;
 import com.shoppingcart.payment.framework.input.mapper.PaymentHttpMapper;

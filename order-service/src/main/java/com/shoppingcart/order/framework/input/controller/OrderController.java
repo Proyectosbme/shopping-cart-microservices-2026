@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.shoppingcart.order.aplicacion.command.port.input.CancelOrder;
-import com.shoppingcart.order.aplicacion.command.port.input.CreateOrder;
-import com.shoppingcart.order.aplicacion.command.port.input.MarkOrderAsPaid;
-import com.shoppingcart.order.aplicacion.command.port.input.RevertOrderToPending;
-import com.shoppingcart.order.aplicacion.query.port.input.GetOrder;
-import com.shoppingcart.order.aplicacion.query.port.input.ListOrdersByCustomer;
+import com.shoppingcart.order.application.command.port.input.CancelOrder;
+import com.shoppingcart.order.application.command.port.input.CreateOrder;
+import com.shoppingcart.order.application.command.port.input.MarkOrderAsPaid;
+import com.shoppingcart.order.application.command.port.input.RevertOrderToPending;
+import com.shoppingcart.order.application.query.port.input.GetOrder;
+import com.shoppingcart.order.application.query.port.input.ListOrdersByCustomer;
 import com.shoppingcart.order.framework.input.dto.CreateOrderRequest;
 import com.shoppingcart.order.framework.input.dto.OrderResponse;
 import com.shoppingcart.order.framework.input.mapper.OrderHttpMapper;

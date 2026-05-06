@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.shoppingcart.product.aplicacion.query.port.input.GetProduct;
-import com.shoppingcart.product.aplicacion.query.port.input.ListProducts;
-import com.shoppingcart.product.aplicacion.query.port.input.ListProductsByCategory;
+import com.shoppingcart.product.application.query.port.input.GetProduct;
+import com.shoppingcart.product.application.query.port.input.ListProducts;
+import com.shoppingcart.product.application.query.port.input.ListProductsByCategory;
 import com.shoppingcart.product.domain.vo.ProductId;
 import com.shoppingcart.product.framework.input.dto.ProductResponseDTO;
 import com.shoppingcart.product.framework.input.mapper.ProductResponseMapper;

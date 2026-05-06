@@ -3,8 +3,8 @@ package com.shoppingcart.payment.framework.output.client.adapters;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import com.shoppingcart.payment.aplicacion.command.port.output.OrderStatusPort;
-import com.shoppingcart.payment.aplicacion.command.port.output.OrderValidationPort;
+import com.shoppingcart.payment.application.command.port.output.OrderStatusPort;
+import com.shoppingcart.payment.application.command.port.output.OrderValidationPort;
 import com.shoppingcart.payment.domain.exceptions.OrderNotFoundException;
 import com.shoppingcart.payment.domain.exceptions.OrderNotValidForPaymentException;
 import com.shoppingcart.payment.framework.output.client.dto.OrderClientDto;

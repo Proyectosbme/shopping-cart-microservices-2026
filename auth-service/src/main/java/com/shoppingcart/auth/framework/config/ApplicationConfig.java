@@ -3,13 +3,13 @@ package com.shoppingcart.auth.framework.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.shoppingcart.auth.aplicacion.command.port.output.PasswordEncoderPort;
-import com.shoppingcart.auth.aplicacion.command.port.output.SaveUserPort;
-import com.shoppingcart.auth.aplicacion.command.port.output.TokenGeneratorPort;
-import com.shoppingcart.auth.aplicacion.command.usecase.LoginUserUseCase;
-import com.shoppingcart.auth.aplicacion.command.usecase.RegisterUserUseCase;
-import com.shoppingcart.auth.aplicacion.query.port.output.LoadUserPort;
-import com.shoppingcart.auth.aplicacion.query.usecase.FindUserUseCase;
+import com.shoppingcart.auth.application.command.port.output.PasswordEncoderPort;
+import com.shoppingcart.auth.application.command.port.output.SaveUserPort;
+import com.shoppingcart.auth.application.command.port.output.TokenGeneratorPort;
+import com.shoppingcart.auth.application.command.usecase.LoginUserUseCase;
+import com.shoppingcart.auth.application.command.usecase.RegisterUserUseCase;
+import com.shoppingcart.auth.application.query.port.output.LoadUserPort;
+import com.shoppingcart.auth.application.query.usecase.FindUserUseCase;
 import com.shoppingcart.auth.framework.output.persistence.adapters.UserPersistenceAdapter;
 import com.shoppingcart.auth.framework.output.persistence.repository.UserJpaRepository;
 

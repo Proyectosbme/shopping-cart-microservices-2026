@@ -5,12 +5,12 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
-import com.shoppingcart.order.aplicacion.command.port.output.OrderCommandRepository;
-import com.shoppingcart.order.aplicacion.query.port.output.OrderQueryRepository;
+import com.shoppingcart.order.application.command.port.output.OrderCommandRepository;
+import com.shoppingcart.order.application.query.port.output.OrderQueryRepository;
 import com.shoppingcart.order.domain.entity.Order;
 import com.shoppingcart.order.domain.vo.OrderId;
 import com.shoppingcart.order.framework.output.mapper.OrderPersistenceMapper;
-import com.shoppingcart.order.framework.output.persistence.entidad.OrderJpaEntity;
+import com.shoppingcart.order.framework.output.persistence.entity.OrderJpaEntity;
 import com.shoppingcart.order.framework.output.persistence.repository.OrderJpaRepository;
 
 @Component

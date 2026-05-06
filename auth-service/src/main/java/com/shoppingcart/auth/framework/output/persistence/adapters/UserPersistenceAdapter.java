@@ -2,8 +2,8 @@ package com.shoppingcart.auth.framework.output.persistence.adapters;
 
 import java.util.Optional;
 
-import com.shoppingcart.auth.aplicacion.command.port.output.SaveUserPort;
-import com.shoppingcart.auth.aplicacion.query.port.output.LoadUserPort;
+import com.shoppingcart.auth.application.command.port.output.SaveUserPort;
+import com.shoppingcart.auth.application.query.port.output.LoadUserPort;
 import com.shoppingcart.auth.domain.entity.User;
 import com.shoppingcart.auth.framework.output.mapper.UserPersistenceMapper;
 import com.shoppingcart.auth.framework.output.persistence.repository.UserJpaRepository;

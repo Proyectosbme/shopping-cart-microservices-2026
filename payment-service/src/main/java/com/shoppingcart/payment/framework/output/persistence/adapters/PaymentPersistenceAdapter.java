@@ -2,8 +2,8 @@ package com.shoppingcart.payment.framework.output.persistence.adapters;
 
 import java.util.List;
 
-import com.shoppingcart.payment.aplicacion.command.port.output.PaymentCommandRepository;
-import com.shoppingcart.payment.aplicacion.query.port.output.PaymentQueryRepository;
+import com.shoppingcart.payment.application.command.port.output.PaymentCommandRepository;
+import com.shoppingcart.payment.application.query.port.output.PaymentQueryRepository;
 import com.shoppingcart.payment.domain.entity.Payment;
 import com.shoppingcart.payment.domain.exceptions.PaymentNotFoundException;
 import com.shoppingcart.payment.domain.vo.PaymentStatus;

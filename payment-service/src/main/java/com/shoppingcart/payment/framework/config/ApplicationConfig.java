@@ -5,8 +5,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
-import com.shoppingcart.payment.aplicacion.command.service.PaymentCommandService;
-import com.shoppingcart.payment.aplicacion.query.service.PaymentQueryService;
+import com.shoppingcart.payment.application.command.service.PaymentCommandService;
+import com.shoppingcart.payment.application.query.service.PaymentQueryService;
 import com.shoppingcart.payment.framework.output.client.adapters.OrderClientAdapter;
 import com.shoppingcart.payment.framework.output.persistence.adapters.PaymentPersistenceAdapter;
 import com.shoppingcart.payment.framework.output.persistence.repository.PaymentJpaRepository;

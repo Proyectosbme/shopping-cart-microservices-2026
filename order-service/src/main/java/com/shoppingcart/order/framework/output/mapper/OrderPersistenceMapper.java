@@ -6,8 +6,8 @@ import com.shoppingcart.order.domain.entity.Customer;
 import com.shoppingcart.order.domain.entity.Order;
 import com.shoppingcart.order.domain.entity.OrderDetail;
 import com.shoppingcart.order.domain.vo.Quantity;
-import com.shoppingcart.order.framework.output.persistence.entidad.OrderDetailJpaEntity;
-import com.shoppingcart.order.framework.output.persistence.entidad.OrderJpaEntity;
+import com.shoppingcart.order.framework.output.persistence.entity.OrderDetailJpaEntity;
+import com.shoppingcart.order.framework.output.persistence.entity.OrderJpaEntity;
 
 public class OrderPersistenceMapper {
 

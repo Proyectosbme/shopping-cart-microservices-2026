@@ -3,11 +3,11 @@ package com.shoppingcart.product.framework.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.shoppingcart.product.aplicacion.query.port.input.GetProduct;
-import com.shoppingcart.product.aplicacion.query.port.input.ListProducts;
-import com.shoppingcart.product.aplicacion.query.port.input.ListProductsByCategory;
-import com.shoppingcart.product.aplicacion.query.port.output.ProductRepository;
-import com.shoppingcart.product.aplicacion.query.service.ProductService;
+import com.shoppingcart.product.application.query.port.input.GetProduct;
+import com.shoppingcart.product.application.query.port.input.ListProducts;
+import com.shoppingcart.product.application.query.port.input.ListProductsByCategory;
+import com.shoppingcart.product.application.query.port.output.ProductRepository;
+import com.shoppingcart.product.application.query.service.ProductService;
 
 @Configuration
 public class ApplicationConfig {

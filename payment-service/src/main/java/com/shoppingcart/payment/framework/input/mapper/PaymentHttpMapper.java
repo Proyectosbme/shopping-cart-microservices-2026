@@ -1,6 +1,6 @@
 package com.shoppingcart.payment.framework.input.mapper;
 
-import com.shoppingcart.payment.aplicacion.command.dto.ProcessPaymentCommand;
+import com.shoppingcart.payment.application.command.dto.ProcessPaymentCommand;
 import com.shoppingcart.payment.domain.entity.Payment;
 import com.shoppingcart.payment.framework.input.dto.PaymentResponse;
 import com.shoppingcart.payment.framework.input.dto.ProcessPaymentRequest;

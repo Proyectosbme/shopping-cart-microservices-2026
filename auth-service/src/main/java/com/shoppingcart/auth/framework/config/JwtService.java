@@ -6,7 +6,7 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.shoppingcart.auth.aplicacion.command.port.output.TokenGeneratorPort;
+import com.shoppingcart.auth.application.command.port.output.TokenGeneratorPort;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

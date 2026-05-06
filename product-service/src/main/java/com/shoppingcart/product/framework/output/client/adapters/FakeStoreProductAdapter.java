@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
-import com.shoppingcart.product.aplicacion.query.port.output.ProductRepository;
+import com.shoppingcart.product.application.query.port.output.ProductRepository;
 import com.shoppingcart.product.domain.entity.Product;
 import com.shoppingcart.product.domain.vo.ProductId;
 import com.shoppingcart.product.framework.output.client.FakeStoreClient;

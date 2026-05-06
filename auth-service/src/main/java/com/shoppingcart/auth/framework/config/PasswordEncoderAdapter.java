@@ -3,7 +3,7 @@ package com.shoppingcart.auth.framework.config;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import com.shoppingcart.auth.aplicacion.command.port.output.PasswordEncoderPort;
+import com.shoppingcart.auth.application.command.port.output.PasswordEncoderPort;
 
 @Component
 public class PasswordEncoderAdapter implements PasswordEncoderPort {

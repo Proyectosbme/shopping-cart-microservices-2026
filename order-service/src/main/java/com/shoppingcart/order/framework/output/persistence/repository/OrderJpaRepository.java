@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.shoppingcart.order.framework.output.persistence.entidad.OrderJpaEntity;
+import com.shoppingcart.order.framework.output.persistence.entity.OrderJpaEntity;
 
 public interface OrderJpaRepository extends JpaRepository<OrderJpaEntity, Long> {
     List<OrderJpaEntity> findByCustomerId(Long customerId);

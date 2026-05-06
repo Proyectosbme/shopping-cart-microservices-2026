@@ -1,6 +1,6 @@
 package com.shoppingcart.order.framework.input.mapper;
 
-import com.shoppingcart.order.aplicacion.command.dto.CreateOrderCommand;
+import com.shoppingcart.order.application.command.dto.CreateOrderCommand;
 import com.shoppingcart.order.domain.entity.Order;
 import com.shoppingcart.order.framework.input.dto.CreateOrderRequest;
 import com.shoppingcart.order.framework.input.dto.OrderResponse;

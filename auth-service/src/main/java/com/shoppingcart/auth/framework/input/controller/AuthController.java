@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.shoppingcart.auth.aplicacion.command.dto.LoginCommand;
-import com.shoppingcart.auth.aplicacion.command.dto.RegisterCommand;
-import com.shoppingcart.auth.aplicacion.command.port.input.LoginUserPort;
-import com.shoppingcart.auth.aplicacion.command.port.input.RegisterUserPort;
+import com.shoppingcart.auth.application.command.dto.LoginCommand;
+import com.shoppingcart.auth.application.command.dto.RegisterCommand;
+import com.shoppingcart.auth.application.command.port.input.LoginUserPort;
+import com.shoppingcart.auth.application.command.port.input.RegisterUserPort;
 import com.shoppingcart.auth.framework.input.dto.AuthResponseDTO;
 import com.shoppingcart.auth.framework.input.dto.LoginRequestDTO;
 import com.shoppingcart.auth.framework.input.dto.RegisterRequestDTO;
