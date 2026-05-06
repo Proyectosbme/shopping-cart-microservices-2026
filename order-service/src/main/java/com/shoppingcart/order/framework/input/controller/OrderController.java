@@ -23,8 +23,12 @@ import com.shoppingcart.order.framework.input.dto.CreateOrderRequest;
 import com.shoppingcart.order.framework.input.dto.OrderResponse;
 import com.shoppingcart.order.framework.input.mapper.OrderHttpMapper;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
+@Tag(name = "Orders", description = "Order management")
 @RestController
 @RequestMapping("/api/orders")
 public class OrderController {
@@ -47,32 +51,48 @@ public class OrderController {
         this.listOrdersByCustomer = listOrdersByCustomer;
     }
 
+    @Operation(summary = "Create a new order")
+    @ApiResponse(responseCode = "201", description = "Order created successfully")
     @PostMapping
     public ResponseEntity<OrderResponse> create(@Valid @RequestBody CreateOrderRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(OrderHttpMapper.toResponse(createOrder.create(OrderHttpMapper.toCommand(request))));
     }
 
+    @Operation(summary = "Cancel an order")
+    @ApiResponse(responseCode = "200", description = "Order cancelled")
+    @ApiResponse(responseCode = "404", description = "Order not found")
     @PatchMapping("/{id}/cancel")
     public ResponseEntity<OrderResponse> cancel(@PathVariable Long id) {
         return ResponseEntity.ok(OrderHttpMapper.toResponse(cancelOrder.cancel(id)));
     }
 
+    @Operation(summary = "Mark an order as paid")
+    @ApiResponse(responseCode = "200", description = "Order marked as paid")
+    @ApiResponse(responseCode = "404", description = "Order not found")
     @PatchMapping("/{id}/pay")
     public ResponseEntity<OrderResponse> pay(@PathVariable Long id) {
         return ResponseEntity.ok(OrderHttpMapper.toResponse(markOrderAsPaid.markAsPaid(id)));
     }
 
+    @Operation(summary = "Revert an order payment back to pending")
+    @ApiResponse(responseCode = "200", description = "Order reverted to pending")
+    @ApiResponse(responseCode = "404", description = "Order not found")
     @PatchMapping("/{id}/revert-payment")
     public ResponseEntity<OrderResponse> revertPayment(@PathVariable Long id) {
         return ResponseEntity.ok(OrderHttpMapper.toResponse(revertOrderToPending.revertToPending(id)));
     }
 
+    @Operation(summary = "Get order by ID")
+    @ApiResponse(responseCode = "200", description = "Order found")
+    @ApiResponse(responseCode = "404", description = "Order not found")
     @GetMapping("/{id}")
     public ResponseEntity<OrderResponse> getById(@PathVariable Long id) {
         return ResponseEntity.ok(OrderHttpMapper.toResponse(getOrder.getById(id)));
     }
 
+    @Operation(summary = "List orders by customer")
+    @ApiResponse(responseCode = "200", description = "List of orders")
     @GetMapping
     public ResponseEntity<List<OrderResponse>> listByCustomer(@RequestParam Long customerId) {
         return ResponseEntity.ok(listOrdersByCustomer.listByCustomer(customerId)

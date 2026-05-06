@@ -15,8 +15,12 @@ import com.shoppingcart.auth.framework.input.dto.AuthResponseDTO;
 import com.shoppingcart.auth.framework.input.dto.LoginRequestDTO;
 import com.shoppingcart.auth.framework.input.dto.RegisterRequestDTO;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
+@Tag(name = "Authentication", description = "User registration and login")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -29,12 +33,18 @@ public class AuthController {
         this.loginUserPort = loginUserPort;
     }
 
+    @Operation(summary = "Register a new user")
+    @ApiResponse(responseCode = "201", description = "User registered successfully")
+    @ApiResponse(responseCode = "400", description = "Invalid request data")
     @PostMapping("/register")
     public ResponseEntity<AuthResponseDTO> register(@Valid @RequestBody RegisterRequestDTO request) {
         String token = registerUserPort.execute(new RegisterCommand(request.email(), request.password()));
         return ResponseEntity.status(HttpStatus.CREATED).body(new AuthResponseDTO(token));
     }
 
+    @Operation(summary = "Login with existing credentials")
+    @ApiResponse(responseCode = "200", description = "Login successful, returns JWT token")
+    @ApiResponse(responseCode = "401", description = "Invalid credentials")
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDTO> login(@Valid @RequestBody LoginRequestDTO request) {
         String token = loginUserPort.execute(new LoginCommand(request.email(), request.password()));
