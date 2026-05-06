@@ -57,6 +57,14 @@ order-service (8083) ←──── payment-service (8082)
         └── reverts to PENDING on refund
 ```
 
+## Build
+
+Run this in each service directory before starting:
+
+```bash
+mvn clean install
+```
+
 ## Running Locally
 
 Start services in this order:
